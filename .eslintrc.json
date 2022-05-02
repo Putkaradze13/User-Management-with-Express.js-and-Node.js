@@ -1,0 +1,26 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["standard"],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "quotes": 0,
+    "semi": 0,
+    "import/no-extraneous-dependencies": "off",
+    "no-plusplus": "off",
+    "comma-dangle": "off",
+    "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "object-curly-newline": "off",
+    "operator-linebreak": "off",
+    "indent": "off",
+    "allowElseIf": 0,
+    "camelcase": "off",
+    "dot-notation": "off"
+  }
+}
