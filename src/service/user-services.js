@@ -1,8 +1,14 @@
 import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
+import { validateCreate, validateUpdate } from '../model/user-schema.js';
 
 class UsersService {
   async createService(data) {
+    const { error } = validateCreate(data);
+    if (error) {
+      throw new Error(error.details[0].message);
+    }
+
     const userExists = await userRepository.findUser(data.user_name);
 
     if (userExists) {
@@ -19,6 +25,11 @@ class UsersService {
   }
 
   async updateService(data) {
+    const { error } = validateUpdate(data);
+    if (error) {
+      throw new Error(error.details[0].message);
+    }
+
     if (!data.password) {
       throw new Error('Please, provide password.');
     }
