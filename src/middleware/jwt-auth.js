@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 
 export const jwtAuth = (req, res, next) => {
@@ -16,3 +15,4 @@ export const jwtAuth = (req, res, next) => {
     next(error);
   }
 };
+

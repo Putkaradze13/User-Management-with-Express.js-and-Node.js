@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
 import { validateCreate, validateUpdate } from '../model/user-schema.js';
 
@@ -70,3 +69,4 @@ class UsersService {
 }
 
 export const usersService = new UsersService();
+
