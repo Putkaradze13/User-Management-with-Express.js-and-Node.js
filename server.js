@@ -27,4 +27,3 @@ mongoose.connect(MDB_URL, { useNewUrlParser: true }, (error) => {
   logger.info('Connected to Database');
   app.listen(PORT, () => logger.info('Server started'));
 });
-

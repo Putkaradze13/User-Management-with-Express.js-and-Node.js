@@ -7,23 +7,28 @@ class UserRepository {
   }
 
   async createUser(data) {
-    const { hashedPass, salt } = await hashing(data.password);
+    const { hashedPass } = await hashing(data.password);
     return await userSchema.create({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
+      email: data.email,
       role: data.role,
-      password: hashedPass,
-      salt
+      password: hashedPass
     });
   }
 
   async updateUser(data) {
-    const { hashedPass, salt } = await hashing(data.password, data.userSalt);
+    const { hashedPass } = await hashing(data.password);
 
     return userSchema.findOneAndUpdate(
       { user_name: data.user_name },
-      { first_name: data.first_name, last_name: data.last_name, password: hashedPass, salt }
+      {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        password: hashedPass
+      }
     );
   }
 

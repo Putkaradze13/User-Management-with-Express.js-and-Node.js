@@ -18,7 +18,7 @@ class UsersService {
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
-      role: data.role,
+      email: data.email,
       password: data.password
     });
   }
@@ -69,4 +69,3 @@ class UsersService {
 }
 
 export const usersService = new UsersService();
-

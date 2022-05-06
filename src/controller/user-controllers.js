@@ -4,8 +4,8 @@ class UsersController {
   async create(req, res, next) {
     try {
       res.data = {};
-      const { first_name, last_name, user_name, role, password } = req.body;
-      await usersService.createService({ first_name, last_name, user_name, role, password });
+      const { first_name, last_name, user_name, email, role, password } = req.body;
+      await usersService.createService({ first_name, last_name, user_name, email, role, password });
       res.data = { message: `User '${user_name}' successfully created.` };
       next();
     } catch (err) {
@@ -19,12 +19,13 @@ class UsersController {
       const { username } = req.params;
       const { user_name, role } = req.userData;
 
-      const { first_name, last_name, password } = req.body;
+      const { first_name, last_name, email, password } = req.body;
       await usersService.updateService({
         username,
         first_name,
         last_name,
         password,
+        email,
         role,
         user_name
       });

@@ -15,4 +15,3 @@ export const jwtAuth = (req, res, next) => {
     next(error);
   }
 };
-
