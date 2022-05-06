@@ -21,6 +21,7 @@
     "indent": "off",
     "allowElseIf": 0,
     "camelcase": "off",
-    "dot-notation": "off"
+    "dot-notation": "off",
+    "space-before-function-paren": "off"
   }
 }
