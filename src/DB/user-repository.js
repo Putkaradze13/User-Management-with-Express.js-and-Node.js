@@ -1,48 +1,59 @@
-import { User as userSchema } from '../model/user-schema.js';
+import { User } from '../model/user-schema.js';
 import { hashing } from '../secure/hash.js';
 
 class UserRepository {
-  async findUser(user_name) {
-    return await userSchema.findOne({ user_name, deleted: false });
+  findUser(user_name) {
+    return User.findOne({ user_name, deleted: false });
+  }
+
+  findUserByEmail(email) {
+    return User.findOne({ email, deleted: false });
   }
 
   async createUser(data) {
-    const { hashedPass, salt } = await hashing(data.password);
-    return await userSchema.create({
+    const { hashedPassword } = await hashing(data.password);
+    return await User.create({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
-      role: data.role,
-      password: hashedPass,
-      salt
+      email: data.email,
+      password: hashedPassword
     });
   }
 
   async updateUser(data) {
-    const { hashedPass, salt } = await hashing(data.password, data.userSalt);
+    const { hashedPass } = await hashing(data.password);
 
-    return userSchema.findOneAndUpdate(
+    return User.findOneAndUpdate(
       { user_name: data.user_name },
-      { first_name: data.first_name, last_name: data.last_name, password: hashedPass, salt }
+      {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        password: hashedPass
+      }
     );
   }
 
-  async findAllUsers(page = 0, limit = 10) {
-    return userSchema
-      .find()
+  async findAllUsers(filter = {}, page = 1, limit = 10) {
+    return User.find()
       .select(['first_name', 'last_name', 'user_name', '-_id'])
-      .skip(page)
+      .skip(skip)
       .limit(limit);
   }
 
   async findOneUser(user_name) {
-    return userSchema
-      .findOne({ user_name })
-      .select(['first_name', 'last_name', 'createdAt', 'updatedAt', '-_id']);
+    return User.findOne({ user_name }).select([
+      'first_name',
+      'last_name',
+      'createdAt',
+      'updatedAt',
+      '-_id'
+    ]);
   }
 
   async deleteUser(user_name) {
-    return userSchema.delete({ user_name });
+    return User.delete({ user_name });
   }
 }
 

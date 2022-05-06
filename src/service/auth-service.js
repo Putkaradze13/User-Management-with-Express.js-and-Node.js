@@ -1,5 +1,5 @@
 import { userRepository } from '../DB/user-repository.js';
-import { hashing } from '../secure/hash.js';
+import { comparePasswords } from '../secure/hash.js';
 import pkg from 'jsonwebtoken';
 const jwt = pkg;
 
@@ -19,10 +19,8 @@ class AuthService {
       throw new Error(`User '${user_name}' is deleted.`);
     }
 
-    const salt = userExists.salt;
-    const userPassword = await hashing(password, salt);
-
-    if (userPassword.hashedPass !== userExists.password) {
+    const match = await comparePasswords(password, userExists.password);
+    if (!match) {
       throw new Error(`Invalid username or password!`);
     }
     return jwt.sign({ user_name, role: userExists.role }, process.env.JWT_KEY, {

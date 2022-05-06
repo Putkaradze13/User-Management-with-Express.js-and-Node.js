@@ -13,10 +13,10 @@ export class Logger {
   }
 
   info(msg) {
-    this.log.info(this.filename + ': ' + msg);
+    this.log.info('from ' + this.filename + ': ' + `'${msg}'`);
   }
 
   error(msg) {
-    this.log.error(this.filename + ' ' + msg);
+    this.log.error('from ' + this.filename + ' ' + `'${msg}'`);
   }
 }

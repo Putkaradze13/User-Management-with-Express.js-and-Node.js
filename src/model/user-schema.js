@@ -1,18 +1,19 @@
 import mongoose from 'mongoose';
 import mongoose_delete from 'mongoose-delete';
+const Schema = mongoose.Schema;
 import Joi from 'joi';
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     first_name: {},
     last_name: {},
     user_name: {},
+    email: {},
     role: {
       type: String,
       default: 'user'
     },
-    password: {},
-    salt: {}
+    password: {}
   },
   { timestamps: true }
 );
@@ -25,9 +26,9 @@ const validateCreate = (user) => {
     first_name: Joi.string().required().min(3).max(24),
     last_name: Joi.string().required().min(3).max(24),
     user_name: Joi.string().alphanum().required().min(3).max(32),
+    email: Joi.string().required().email(),
     role: Joi.string(),
-    password: Joi.string().required().min(3),
-    salt: Joi.string()
+    password: Joi.string().required().min(3)
   });
   return schema.validate(user);
 };
@@ -38,9 +39,9 @@ const validateUpdate = (user) => {
     last_name: Joi.string().required().min(3).max(24),
     user_name: Joi.string().alphanum().required().min(3).max(32),
     username: Joi.string().alphanum().required().min(3).max(32),
+    email: Joi.string().required().email(),
     role: Joi.string(),
-    password: Joi.string().required().min(3),
-    salt: Joi.string()
+    password: Joi.string().required().min(3)
   });
   return schema.validate(user);
 };

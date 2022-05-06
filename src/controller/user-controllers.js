@@ -4,8 +4,8 @@ class UsersController {
   async create(req, res, next) {
     try {
       res.data = {};
-      const { first_name, last_name, user_name, role, password } = req.body;
-      await usersService.createService({ first_name, last_name, user_name, role, password });
+      const { first_name, last_name, user_name, email, role, password } = req.body;
+      await usersService.createService({ first_name, last_name, user_name, email, role, password });
       res.data = { message: `User '${user_name}' successfully created.` };
       next();
     } catch (err) {
@@ -19,11 +19,12 @@ class UsersController {
       const { username } = req.params;
       const { user_name, role } = req.userData;
 
-      const { first_name, last_name, password } = req.body;
+      const { first_name, last_name, email, password } = req.body;
       await usersService.updateService({
         username,
         first_name,
         last_name,
+        email,
         password,
         role,
         user_name
@@ -71,6 +72,35 @@ class UsersController {
       res.data = { message: `User ${username} has been deleted!` };
       next();
     } catch (err) {
+      next({ message: err.message });
+    }
+  }
+
+  async forgotPassword(req, res, next) {
+    try {
+      res.data = {};
+      const { email } = req.body;
+      await usersService.forgotPasswordService(email);
+      res.data = { message: `Password reset link is sent to your email!` };
+      next();
+    } catch (err) {
+      next({ message: err.message });
+    }
+  }
+
+  async resetPassword(req, res, next) {
+    try {
+      res.data = {};
+      const { userId } = req.params.userId;
+      const { token } = req.params.token;
+      const { password } = req.body;
+      console.log(userId, token, password);
+
+      await usersService.resetPasswordService(userId, token, password);
+
+      res.data = { message: `Sucessfully reseted password.` };
+      next();
+    } catch (error) {
       next({ message: err.message });
     }
   }

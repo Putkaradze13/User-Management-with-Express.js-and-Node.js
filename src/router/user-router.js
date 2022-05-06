@@ -8,3 +8,5 @@ userRouter.put('/update/:username', jwtAuth, usersController.update);
 userRouter.get('/getAllUsers', usersController.getAllUsers);
 userRouter.get('/getOneUser', usersController.getOneUser);
 userRouter.delete('/deleteUser/:username', jwtAuth, usersController.deleteUser);
+userRouter.post('/forgotPassword', usersController.forgotPassword);
+userRouter.post('/:userId/:token', usersController.resetPassword);
