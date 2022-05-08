@@ -1,7 +1,7 @@
 import { usersService } from '../service/user-services.js';
 
 class UsersController {
-  async create(req, res, next) {
+  async create (req, res, next) {
     try {
       res.data = {};
       const { first_name, last_name, user_name, email, role, password } = req.body;
@@ -13,7 +13,7 @@ class UsersController {
     }
   }
 
-  async update(req, res, next) {
+  async update (req, res, next) {
     try {
       res.data = {};
       const { username } = req.params;
@@ -36,7 +36,7 @@ class UsersController {
     }
   }
 
-  async getAllUsers(req, res, next) {
+  async getAllUsers (req, res, next) {
     try {
       res.data = {};
       const { page, limit } = req.query;
@@ -49,7 +49,7 @@ class UsersController {
     }
   }
 
-  async getOneUser(req, res, next) {
+  async getOneUser (req, res, next) {
     try {
       res.data = {};
       const { user_name } = req.body;
@@ -62,7 +62,7 @@ class UsersController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  async deleteUser (req, res, next) {
     try {
       res.data = {};
       const { username } = req.params;
@@ -76,7 +76,7 @@ class UsersController {
     }
   }
 
-  async forgotPassword(req, res, next) {
+  async forgotPassword (req, res, next) {
     try {
       res.data = {};
       const { email } = req.body;
@@ -88,7 +88,7 @@ class UsersController {
     }
   }
 
-  async resetPassword(req, res, next) {
+  async resetPassword (req, res, next) {
     try {
       res.data = {};
       const { userId } = req.params.userId;

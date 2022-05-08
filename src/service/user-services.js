@@ -1,19 +1,19 @@
 import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
 import { TokenRepository } from '../DB/token-repository.js';
-import { validateCreate, validateUpdate } from '../model/user-schema.js';
-import { validateForgotPass, validateResetPass } from '../model/token-schema.js';
+import { validateCreate, validateUpdate, User } from '../model/user-schema.js';
+import { validateForgotPass, validateResetPass, Token } from '../model/token-schema.js';
 import { sendEmail } from '../utils/sendMail.js';
-import { Token } from '../model/token-schema.js';
-import { User } from '../model/user-schema.js';
+
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
 class UsersService {
-  constructor() {
+  constructor () {
     this.tokenRepository = new TokenRepository();
   }
-  async createService(data) {
+
+  async createService (data) {
     const { error } = validateCreate(data);
     if (error) {
       throw new Error(error.details[0].message);
@@ -34,11 +34,11 @@ class UsersService {
     });
   }
 
-  async getAllUserService(page, limit) {
+  async getAllUserService (page, limit) {
     return userRepository.findAllUsers(parseInt(page), parseInt(limit));
   }
 
-  async getOneUserService(user_name) {
+  async getOneUserService (user_name) {
     const userExists = await userRepository.findUser(user_name);
 
     if (!userExists) {
@@ -51,7 +51,7 @@ class UsersService {
     return userRepository.findOneUser(user_name);
   }
 
-  async deleteService(user_name, role, username) {
+  async deleteService (user_name, role, username) {
     await userRepository.findUser(user_name);
 
     if (role !== 'admin' && username !== user_name) {
@@ -61,7 +61,7 @@ class UsersService {
     return userRepository.deleteUser(user_name);
   }
 
-  async updateService(data) {
+  async updateService (data) {
     const { error } = validateUpdate(data);
     if (error) {
       throw new Error(error.details[0].message);
@@ -78,7 +78,7 @@ class UsersService {
     return await userRepository.updateUser(data);
   }
 
-  async forgotPasswordService(email) {
+  async forgotPasswordService (email) {
     const { error } = validateForgotPass(email);
     if (error) {
       throw new Error(error.details[0].message);
@@ -87,12 +87,12 @@ class UsersService {
     if (!user) throw new Error(`User with given email doesn't exist`);
     console.log(user._id);
 
-    let token = await this.tokenRepository.findUserById(user._id);
+    const token = await this.tokenRepository.findUserById(user._id);
     if (token) {
       await this.tokenRepository.deleteTokenByUserId(user._id);
     }
 
-    let resetToken = crypto.randomBytes(32).toString('hex');
+    const resetToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = await bcrypt.hash(resetToken, 10);
 
     await this.tokenRepository.createToken(user._id, hashedToken);
@@ -102,7 +102,7 @@ class UsersService {
     return link;
   }
 
-  async resetPasswordService(userId, token, password) {
+  async resetPasswordService (userId, token, password) {
     const { error } = validateResetPass(password);
     if (error) {
       throw new Error(error.details[0].message);

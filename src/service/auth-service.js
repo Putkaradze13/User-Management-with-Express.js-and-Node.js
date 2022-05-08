@@ -4,7 +4,7 @@ import pkg from 'jsonwebtoken';
 const jwt = pkg;
 
 class AuthService {
-  async loginService(user_name, password) {
+  async loginService (user_name, password) {
     const userExists = await userRepository.findUser(user_name);
 
     if (user_name.length < 1 || password.length < 1) {

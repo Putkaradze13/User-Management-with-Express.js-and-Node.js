@@ -1,6 +1,6 @@
 import logger from 'pino';
 export class Logger {
-  constructor(filename) {
+  constructor (filename) {
     this.log = logger({
       prettyPrint: {
         colorize: true,
@@ -12,11 +12,11 @@ export class Logger {
     this.filename = filename;
   }
 
-  info(msg) {
+  info (msg) {
     this.log.info('from ' + this.filename + ': ' + `'${msg}'`);
   }
 
-  error(msg) {
+  error (msg) {
     this.log.error('from ' + this.filename + ' ' + `'${msg}'`);
   }
 }

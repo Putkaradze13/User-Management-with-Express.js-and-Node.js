@@ -2,15 +2,15 @@ import { User } from '../model/user-schema.js';
 import { hashing } from '../secure/hash.js';
 
 class UserRepository {
-  findUser(user_name) {
+  findUser (user_name) {
     return User.findOne({ user_name, deleted: false });
   }
 
-  findUserByEmail(email) {
+  findUserByEmail (email) {
     return User.findOne({ email, deleted: false });
   }
 
-  async createUser(data) {
+  async createUser (data) {
     const { hashedPassword } = await hashing(data.password);
     return await User.create({
       first_name: data.first_name,
@@ -21,7 +21,7 @@ class UserRepository {
     });
   }
 
-  async updateUser(data) {
+  async updateUser (data) {
     const { hashedPass } = await hashing(data.password);
 
     return User.findOneAndUpdate(
@@ -35,14 +35,14 @@ class UserRepository {
     );
   }
 
-  async findAllUsers(filter = {}, page = 1, limit = 10) {
+  async findAllUsers (filter = {}, page = 1, limit = 10) {
     return User.find()
       .select(['first_name', 'last_name', 'user_name', '-_id'])
       .skip(skip)
       .limit(limit);
   }
 
-  async findOneUser(user_name) {
+  async findOneUser (user_name) {
     return User.findOne({ user_name }).select([
       'first_name',
       'last_name',
@@ -52,7 +52,7 @@ class UserRepository {
     ]);
   }
 
-  async deleteUser(user_name) {
+  async deleteUser (user_name) {
     return User.delete({ user_name });
   }
 }

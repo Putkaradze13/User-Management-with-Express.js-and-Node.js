@@ -1,17 +1,17 @@
 import { Token } from '../model/token-schema.js';
 
 export class TokenRepository {
-  findUserById(userId) {
+  findUserById (userId) {
     return Token.findOne({ userId });
   }
 
-  deleteTokenByUserId(userId) {
+  deleteTokenByUserId (userId) {
     return Token.deleteOne({
       userId
     });
   }
 
-  createToken(userId, hashedToken) {
+  createToken (userId, hashedToken) {
     return Token.create({
       userId,
       token: hashedToken,

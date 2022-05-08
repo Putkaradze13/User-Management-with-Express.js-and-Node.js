@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import Joi from 'joi';
+const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
   userId: {
