@@ -6,15 +6,19 @@ class UserRepository {
     return await userSchema.findOne({ user_name, deleted: false });
   }
 
+  async findUserById(_id) {
+    return await userSchema.findOne({ _id, deleted: false });
+  }
+
   async createUser(data) {
-    const { hashedPass } = await hashing(data.password);
+    const { hashedPassword } = await hashing(data.password);
     return await userSchema.create({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
       email: data.email,
       role: data.role,
-      password: hashedPass
+      password: hashedPassword
     });
   }
 
@@ -32,22 +36,16 @@ class UserRepository {
     );
   }
 
-  async findAllUsers(page = 0, limit = 10) {
-    return userSchema
-      .find()
-      .select(['first_name', 'last_name', 'user_name', '-_id'])
-      .skip(page)
-      .limit(limit);
+  async findAllUsers(filter, skip, limit) {
+    return userSchema.find(filter).skip(skip).limit(limit);
   }
 
-  async findOneUser(user_name) {
-    return userSchema
-      .findOne({ user_name })
-      .select(['first_name', 'last_name', 'createdAt', 'updatedAt', '-_id']);
+  async findOneUser(filter) {
+    return userSchema.findOne(filter);
   }
 
-  async deleteUser(user_name) {
-    return userSchema.delete({ user_name });
+  async deleteUserById(_id) {
+    return userSchema.delete({ _id });
   }
 }
 

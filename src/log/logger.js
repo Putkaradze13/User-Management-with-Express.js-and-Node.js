@@ -1,6 +1,6 @@
 import logger from 'pino';
 export class Logger {
-  constructor(filename) {
+  constructor(className) {
     this.log = logger({
       prettyPrint: {
         colorize: true,
@@ -9,14 +9,14 @@ export class Logger {
         ignore: 'pid,hostname'
       }
     });
-    this.filename = filename;
+    this.className = className;
   }
 
   info(msg) {
-    this.log.info(this.filename + ': ' + msg);
+    this.log.info(this.className + ': ' + msg);
   }
 
   error(msg) {
-    this.log.error(this.filename + ' ' + msg);
+    this.log.error(this.className + ' ' + msg);
   }
 }

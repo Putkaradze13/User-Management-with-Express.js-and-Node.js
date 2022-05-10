@@ -4,75 +4,65 @@ class UsersController {
   async create(req, res, next) {
     try {
       res.data = {};
-      const { first_name, last_name, user_name, email, role, password } = req.body;
-      await usersService.createService({ first_name, last_name, user_name, email, role, password });
-      res.data = { message: `User '${user_name}' successfully created.` };
+      const createdUser = await usersService.createService(req.body);
+      res.data = createdUser;
       next();
     } catch (err) {
-      next({ message: err.message });
+      next(err);
     }
   }
 
   async update(req, res, next) {
     try {
       res.data = {};
-      const { username } = req.params;
-      const { user_name, role } = req.userData;
-
-      const { first_name, last_name, email, password } = req.body;
-      await usersService.updateService({
-        username,
-        first_name,
-        last_name,
-        password,
-        email,
-        role,
-        user_name
-      });
+      const { userId } = req.param;
+      await usersService.updateService(userId, req.body);
       res.data = { message: 'User information updated!' };
       next();
     } catch (err) {
-      next({ message: err.message });
+      next(err);
     }
   }
 
   async getAllUsers(req, res, next) {
     try {
       res.data = {};
-      const { page, limit } = req.query;
-      const userList = await usersService.getAllUserService(page, limit);
-      res.data = { users: userList };
-
+      const { page = 1, limit = 10, filter = {}, totalNumberOfUsersInDB } = req.query;
+      const userList = await usersService.getAllUserService(filter, page, limit);
+      res.data = userList;
+      res.pagination = {
+        total: totalNumberOfUsersInDB,
+        limit,
+        skip: (page - 1) * limit,
+        inPage: userList.length
+      };
       next();
     } catch (err) {
-      next({ message: err.message });
+      next(err);
     }
   }
 
   async getOneUser(req, res, next) {
     try {
       res.data = {};
-      const { user_name } = req.body;
-      const oneUser = await usersService.getOneUserService(user_name);
+      const { userId } = req.param;
+      const oneUser = await usersService.getOneUserService(userId);
       res.data = { user: oneUser };
-
       next();
     } catch (err) {
-      next({ message: err.message });
+      next(err);
     }
   }
 
   async deleteUser(req, res, next) {
     try {
       res.data = {};
-      const { username } = req.params;
-      const { user_name, role } = req.userData;
-
-      await usersService.deleteService(username, role, user_name);
-      res.data = { message: `User ${username} has been deleted!` };
+      const { userId } = req.params;
+      const deletedUser = await usersService.deleteService(userId);
+      res.data = deletedUser;
       next();
     } catch (err) {
-      next({ message: err.message });
+      next(err);
     }
   }
 }

@@ -24,6 +24,7 @@ class UsersService {
   }
 
   async updateService(data) {
+    console.log(data);
     const { error } = validateUpdate(data);
     if (error) {
       throw new Error(error.details[0].message);
@@ -40,31 +41,27 @@ class UsersService {
     return await userRepository.updateUser(data);
   }
 
-  async getAllUserService(page, limit) {
-    return userRepository.findAllUsers(parseInt(page), parseInt(limit));
+  async getAllUserService(filter, page, limit) {
+    return userRepository.findAllUsers(filter, parseInt(page), parseInt(limit));
   }
 
-  async getOneUserService(user_name) {
-    const userExists = await userRepository.findUser(user_name);
+  async getOneUserService(userId) {
+    const userExists = await userRepository.findUser(userId);
 
     if (!userExists) {
-      throw new Error(`User '${user_name}' doesn't exist.`);
+      throw new Error(`User with given id doesn't exist.`);
     }
-    if (userExists.deketed === true) {
-      throw new Error(`User '${user_name}' is deleted`);
+    if (userExists.deleted === true) {
+      throw new Error(`User with given id is deleted`);
     }
 
-    return userRepository.findOneUser(user_name);
+    return userRepository.findOneUser(userId);
   }
 
-  async deleteService(user_name, role, username) {
-    await userRepository.findUser(user_name);
+  async deleteService(userId) {
+    await userRepository.findUserById(userId);
 
-    if (role !== 'admin' && username !== user_name) {
-      throw new Error('Not allowed');
-    }
-
-    return userRepository.deleteUser(user_name);
+    return userRepository.deleteUserById(userId);
   }
 }
 
