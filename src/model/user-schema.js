@@ -9,10 +9,6 @@ const userSchema = new Schema(
     last_name: {},
     user_name: {},
     email: {},
-    role: {
-      type: String,
-      default: 'user'
-    },
     password: {}
   },
   { timestamps: true }
@@ -27,7 +23,6 @@ const validateCreate = (user) => {
     last_name: Joi.string().required().min(3).max(24),
     user_name: Joi.string().alphanum().required().min(3).max(32),
     email: Joi.string().required().email(),
-    role: Joi.string(),
     password: Joi.string().required().min(3)
   });
   return schema.validate(user);
@@ -38,9 +33,8 @@ const validateUpdate = (user) => {
     first_name: Joi.string().required().min(3).max(24),
     last_name: Joi.string().required().min(3).max(24),
     user_name: Joi.string().alphanum().required().min(3).max(32),
-    username: Joi.string().alphanum().required().min(3).max(32),
+    userId: Joi.string().required(),
     email: Joi.string().required().email(),
-    role: Joi.string(),
     password: Joi.string().required().min(3)
   });
   return schema.validate(user);

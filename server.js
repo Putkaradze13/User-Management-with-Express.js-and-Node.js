@@ -14,8 +14,8 @@ const { PORT, MDB_URL } = process.env;
 const app = express();
 
 app.use(express.json());
-app.use(userRouter);
-app.use(authRouter);
+app.use('/user', userRouter);
+app.use('/auth', authRouter);
 app.use(resHandler);
 app.use(errorHandler);
 

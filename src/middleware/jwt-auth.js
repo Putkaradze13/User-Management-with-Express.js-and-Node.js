@@ -1,17 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { userRepository } from '../DB/user-repository.js';
 
 export const jwtAuth = (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return next({ message: 'Not allowed' });
 
-    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_KEY, (err, userExists) => {
       if (err) {
         return next({ message: 'Invalid Token' });
       }
-      const { user_name } = decoded;
-      req.userData = userRepository.findUser(user_name);
+      req.userData = userExists;
       next();
     });
   } catch (error) {

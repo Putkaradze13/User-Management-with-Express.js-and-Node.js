@@ -14,7 +14,7 @@ class UsersService {
       throw new Error(`User '${data.user_name}' already exists.`);
     }
 
-    await userRepository.createUser({
+    return await userRepository.createUser({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
@@ -34,7 +34,7 @@ class UsersService {
       throw new Error('Please, provide password.');
     }
 
-    if (data.role !== 'admin' && data.username !== data.user_name) {
+    if (data.username !== data.user_name) {
       throw new Error('Not allowed');
     }
 

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
 import { comparePasswords } from '../secure/hash.js';
 import pkg from 'jsonwebtoken';
@@ -23,9 +24,9 @@ class AuthService {
     if (!match) {
       throw new Error(`Invalid username or password!`);
     }
-    return jwt.sign({ user_name, role: userExists.role }, process.env.JWT_KEY, {
-      expiresIn: '24h'
-    });
+
+    const token = jwt.sign(userExists.toJSON(), process.env.JWT_KEY, { expiresIn: '24h' });
+    console.log(token);
   }
 }
 

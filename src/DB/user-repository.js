@@ -17,23 +17,15 @@ class UserRepository {
       last_name: data.last_name,
       user_name: data.user_name,
       email: data.email,
-      role: data.role,
       password: hashedPassword
     });
   }
 
   async updateUser(data) {
+    console.log(data);
     const { hashedPass } = await hashing(data.password);
 
-    return userSchema.findOneAndUpdate(
-      { user_name: data.user_name },
-      {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: hashedPass
-      }
-    );
+    return userSchema.findOneAndUpdate({ id }, data);
   }
 
   async findAllUsers(filter, skip, limit) {
@@ -44,8 +36,8 @@ class UserRepository {
     return userSchema.findOne(filter);
   }
 
-  async deleteUserById(_id) {
-    return userSchema.delete({ _id });
+  async deleteUserById(id) {
+    return userSchema.delete({ id });
   }
 }
 
