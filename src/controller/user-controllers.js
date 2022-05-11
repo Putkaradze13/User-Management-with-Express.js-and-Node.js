@@ -5,7 +5,6 @@ class UsersController {
     try {
       res.data = {};
       const createdUser = await usersService.createService(req.body);
-      console.log(createdUser);
       res.data = createdUser;
       next();
     } catch (err) {
@@ -19,7 +18,6 @@ class UsersController {
       const { userId } = req.params;
       const updatedUser = await usersService.updateService(userId, req.body);
       res.data = updatedUser;
-      console.log(updatedUser);
       next();
     } catch (err) {
       next(err);
@@ -29,7 +27,7 @@ class UsersController {
   async getAllUsers(req, res, next) {
     try {
       res.data = {};
-      const { page = 1, limit = 10, filter = {} } = req.query;
+      const { page = 1, limit = 10, filter = {}, totalNumberOfUsersInDB } = req.query;
       const userList = await usersService.getAllUserService(filter, page, limit);
       res.data = userList;
       res.pagination = {
@@ -47,7 +45,7 @@ class UsersController {
   async getOneUser(req, res, next) {
     try {
       res.data = {};
-      const { userId } = req.param;
+      const { userId } = req.params;
       const oneUser = await usersService.getOneUserService(userId);
       res.data = { user: oneUser };
       next();

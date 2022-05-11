@@ -23,8 +23,7 @@ class UsersService {
     });
   }
 
-  async updateService(data) {
-    console.log(data);
+  async updateService(userId, data) {
     const { error } = validateUpdate(data);
     if (error) {
       throw new Error(error.details[0].message);
@@ -34,19 +33,15 @@ class UsersService {
       throw new Error('Please, provide password.');
     }
 
-    if (data.username !== data.user_name) {
-      throw new Error('Not allowed');
-    }
-
-    return await userRepository.updateUser(data);
+    return await userRepository.updateUser(userId, data);
   }
 
   async getAllUserService(filter, page, limit) {
-    return userRepository.findAllUsers(filter, parseInt(page), parseInt(limit));
+    return await userRepository.findAllUsers(filter, parseInt(page), parseInt(limit));
   }
 
   async getOneUserService(userId) {
-    const userExists = await userRepository.findUser(userId);
+    const userExists = await userRepository.findUserById(userId);
 
     if (!userExists) {
       throw new Error(`User with given id doesn't exist.`);
@@ -55,7 +50,7 @@ class UsersService {
       throw new Error(`User with given id is deleted`);
     }
 
-    return userRepository.findOneUser(userId);
+    return userExists;
   }
 
   async deleteService(userId) {

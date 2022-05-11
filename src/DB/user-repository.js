@@ -21,19 +21,26 @@ class UserRepository {
     });
   }
 
-  async updateUser(data) {
-    console.log(data);
+  async updateUser(_id, data) {
     const { hashedPass } = await hashing(data.password);
 
-    return userSchema.findOneAndUpdate({ id }, data);
+    return await userSchema.findOneAndUpdate(
+      { _id },
+      {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        password: hashedPass
+      }
+    );
   }
 
   async findAllUsers(filter, skip, limit) {
     return userSchema.find(filter).skip(skip).limit(limit);
   }
 
-  async findOneUser(filter) {
-    return userSchema.findOne(filter);
+  async findOneUser(_id) {
+    return userSchema.findOne(_id);
   }
 
   async deleteUserById(id) {

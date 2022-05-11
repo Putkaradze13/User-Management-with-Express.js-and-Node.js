@@ -3,10 +3,10 @@ import { authService } from '../service/auth-service.js';
 class AuthController {
   async login(req, res, next) {
     try {
-      res.body = {};
-      const { user_name, password } = req.body;
-      const { token } = await authService.loginService(user_name, password);
-      res.body.token = token;
+      res.data = {};
+
+      const { token } = await authService.loginService(req.body);
+      res.data.token = token;
       next();
     } catch (err) {
       next(err);

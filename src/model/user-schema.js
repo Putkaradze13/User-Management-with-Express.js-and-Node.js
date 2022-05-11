@@ -32,8 +32,6 @@ const validateUpdate = (user) => {
   const schema = Joi.object({
     first_name: Joi.string().required().min(3).max(24),
     last_name: Joi.string().required().min(3).max(24),
-    user_name: Joi.string().alphanum().required().min(3).max(32),
-    userId: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(3)
   });

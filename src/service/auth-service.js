@@ -5,7 +5,7 @@ import pkg from 'jsonwebtoken';
 const jwt = pkg;
 
 class AuthService {
-  async loginService(user_name, password) {
+  async loginService({ user_name, password }) {
     const userExists = await userRepository.findUser(user_name);
 
     if (user_name.length < 1 || password.length < 1) {
@@ -27,6 +27,7 @@ class AuthService {
 
     const token = jwt.sign(userExists.toJSON(), process.env.JWT_KEY, { expiresIn: '24h' });
     console.log(token);
+    return { token };
   }
 }
 
