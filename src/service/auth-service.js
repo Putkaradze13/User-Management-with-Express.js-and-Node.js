@@ -8,10 +8,6 @@ class AuthService {
   async loginService({ user_name, password }) {
     const userExists = await userRepository.findUser(user_name);
 
-    if (user_name.length < 1 || password.length < 1) {
-      throw new Error(`Please input username and password!`);
-    }
-
     if (!userExists) {
       throw new Error(`User '${user_name}' doesn't exist.`);
     }
@@ -25,8 +21,7 @@ class AuthService {
       throw new Error(`Invalid username or password!`);
     }
 
-    const token = jwt.sign(userExists.toJSON(), process.env.JWT_KEY, { expiresIn: '24h' });
-    console.log(token);
+    const token = jwt.sign({ user_name }, process.env.JWT_KEY, { expiresIn: '24h' });
     return { token };
   }
 }

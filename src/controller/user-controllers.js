@@ -27,11 +27,15 @@ class UsersController {
   async getAllUsers(req, res, next) {
     try {
       res.data = {};
-      const { page = 1, limit = 10, filter = {}, totalNumberOfUsersInDB } = req.query;
-      const userList = await usersService.getAllUserService(filter, page, limit);
+      const { page = 1, limit = 10, filter } = req.query;
+      const newFilter = {};
+      if (filter !== undefined) {
+        const filterKeyValue = filter.split('==');
+        newFilter[filterKeyValue[0]] = filterKeyValue[1];
+      }
+      const userList = await usersService.getAllUserService(newFilter, (page - 1) * limit, limit);
       res.data = userList;
       res.pagination = {
-        total: totalNumberOfUsersInDB,
         limit,
         skip: (page - 1) * limit,
         inPage: userList.length

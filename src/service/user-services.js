@@ -1,13 +1,7 @@
 import { userRepository } from '../DB/user-repository.js';
-import { validateCreate, validateUpdate } from '../model/user-schema.js';
 
 class UsersService {
   async createService(data) {
-    const { error } = validateCreate(data);
-    if (error) {
-      throw new Error(error.details[0].message);
-    }
-
     const userExists = await userRepository.findUser(data.user_name);
 
     if (userExists) {
@@ -24,20 +18,13 @@ class UsersService {
   }
 
   async updateService(userId, data) {
-    const { error } = validateUpdate(data);
-    if (error) {
-      throw new Error(error.details[0].message);
-    }
+    await userRepository.updateUser(userId, data);
 
-    if (!data.password) {
-      throw new Error('Please, provide password.');
-    }
-
-    return await userRepository.updateUser(userId, data);
+    return await userRepository.findUserById(userId);
   }
 
-  async getAllUserService(filter, page, limit) {
-    return await userRepository.findAllUsers(filter, parseInt(page), parseInt(limit));
+  async getAllUserService(filter, skip, limit) {
+    return await userRepository.findAllUsers(filter, parseInt(skip), parseInt(limit));
   }
 
   async getOneUserService(userId) {
@@ -54,9 +41,12 @@ class UsersService {
   }
 
   async deleteService(userId) {
-    await userRepository.findUserById(userId);
+    const user = await userRepository.findUserById(userId);
 
-    return userRepository.deleteUserById(userId);
+    if (user.deleted === true) return `User is already deleted!`;
+
+    await userRepository.deleteUserById(userId);
+    return await userRepository.findUserById(userId);
   }
 }
 
