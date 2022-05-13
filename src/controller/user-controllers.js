@@ -16,7 +16,7 @@ class UsersController {
     try {
       res.data = {};
       const { userId } = req.params;
-      const updatedUser = await usersService.updateService(userId, req.body);
+      const updatedUser = await usersService.updateService(userId, req.body, req.userData);
       res.data = updatedUser;
       next();
     } catch (err) {
@@ -62,7 +62,7 @@ class UsersController {
     try {
       res.data = {};
       const { userId } = req.params;
-      const deletedUser = await usersService.deleteService(userId);
+      const deletedUser = await usersService.deleteService(userId, req.userData);
       res.data = deletedUser;
       next();
     } catch (err) {

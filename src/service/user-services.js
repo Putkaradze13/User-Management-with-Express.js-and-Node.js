@@ -17,7 +17,11 @@ class UsersService {
     });
   }
 
-  async updateService(userId, data) {
+  async updateService(userId, data, userData) {
+    if (userId != userData._id) {
+      throw new Error('Not allowed');
+    }
+
     await userRepository.updateUser(userId, data);
 
     return await userRepository.findUserById(userId);
@@ -33,17 +37,15 @@ class UsersService {
     if (!userExists) {
       throw new Error(`User with given id doesn't exist.`);
     }
-    if (userExists.deleted === true) {
-      throw new Error(`User with given id is deleted`);
-    }
+    if (userExists.deleted === true) throw new Error(`User with given id is deleted`);
 
     return userExists;
   }
 
-  async deleteService(userId) {
-    const user = await userRepository.findUserById(userId);
+  async deleteService(userId, userData) {
+    if (userId != userData._id) throw new Error('Not allowed');
 
-    if (user.deleted === true) return `User is already deleted!`;
+    if (userData.deleted === true) throw new Error(`User is already deleted!`);
 
     await userRepository.deleteUserById(userId);
     return await userRepository.findUserById(userId);

@@ -28,6 +28,6 @@ mongoose.connect(
       return;
     }
     logger.info('Connected to Database');
-    app.listen(PORT || 3001, () => logger.info('Server started'));
+    app.listen(PORT, () => logger.info('Server started'));
   }
 );
