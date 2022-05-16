@@ -5,7 +5,7 @@ export const errorHandler = (error, req, res, next) => {
     });
   } catch (e) {
     return res.json({
-      error: e.mssage
+      error: e.message
     });
   }
 };

@@ -1,18 +1,18 @@
-import { User as userSchema } from '../model/user-schema.js';
+import { User } from '../model/user-schema.js';
 import { hashing } from '../secure/hash.js';
 
 class UserRepository {
   async findUser(user_name) {
-    return await userSchema.findOne({ user_name });
+    return await User.findOne({ user_name });
   }
 
   async findUserById(_id) {
-    return await userSchema.findOne({ _id });
+    return await User.findOne({ _id });
   }
 
   async createUser(data) {
     const { hashedPassword } = await hashing(data.password);
-    return await userSchema.create({
+    return await User.create({
       first_name: data.first_name,
       last_name: data.last_name,
       user_name: data.user_name,
@@ -24,7 +24,7 @@ class UserRepository {
   async updateUser(_id, data) {
     const { hashedPassword } = await hashing(data.password);
 
-    return await userSchema.findOneAndUpdate(
+    return await User.findOneAndUpdate(
       { _id },
       {
         first_name: data.first_name,
@@ -36,16 +36,16 @@ class UserRepository {
   }
 
   async findAllUsers(filter, skip, limit) {
-    const x = await userSchema.find(filter).skip(skip).limit(limit);
+    const x = await User.find(filter).skip(skip).limit(limit);
     return x;
   }
 
   async findOneUser(filter) {
-    return userSchema.findOne(filter);
+    return User.findOne(filter);
   }
 
   async deleteUserById(_id) {
-    return userSchema.delete({ _id });
+    return User.delete({ _id });
   }
 }
 

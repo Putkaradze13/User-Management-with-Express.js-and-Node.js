@@ -24,6 +24,11 @@ class AuthService {
     const token = jwt.sign({ user_name }, process.env.JWT_KEY, { expiresIn: '24h' });
     return { token };
   }
+
+  async whoamiService(userData) {
+    const userExists = await userRepository.findUser(userData.user_name);
+    return userExists;
+  }
 }
 
 export const authService = new AuthService();

@@ -3,7 +3,7 @@ import mongoose_delete from 'mongoose-delete';
 import Joi from 'joi';
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
+const user = new Schema(
   {
     first_name: {},
     last_name: {},
@@ -14,8 +14,8 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.plugin(mongoose_delete, { deletedAt: true });
-const User = mongoose.model('User', userSchema);
+user.plugin(mongoose_delete, { deletedAt: true });
+const User = mongoose.model('User', user);
 
 const validateCreate = (user) => {
   const schema = Joi.object({

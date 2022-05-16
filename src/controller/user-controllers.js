@@ -1,4 +1,5 @@
 import { usersService } from '../service/user-services.js';
+import { getAllUsersFilter } from '../utils/get-users-filter.js';
 
 class UsersController {
   async create(req, res, next) {
@@ -28,11 +29,12 @@ class UsersController {
     try {
       res.data = {};
       const { page = 1, limit = 10, filter } = req.query;
-      const newFilter = {};
-      if (filter !== undefined) {
-        const filterKeyValue = filter.split('==');
-        newFilter[filterKeyValue[0]] = filterKeyValue[1];
+      let newFilter = {};
+
+      if (filter) {
+        newFilter = getAllUsersFilter(filter);
       }
+
       const userList = await usersService.getAllUserService(newFilter, (page - 1) * limit, limit);
       res.data = userList;
       res.pagination = {

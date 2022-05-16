@@ -11,6 +11,17 @@ class AuthController {
       next(err);
     }
   }
+
+  async whoami(req, res, next) {
+    try {
+      res.data = {};
+      const user = await authService.whoamiService(req.userData);
+      res.data = user;
+      next();
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export const authController = new AuthController();
