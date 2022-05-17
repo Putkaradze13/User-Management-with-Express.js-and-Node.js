@@ -19,15 +19,11 @@ app.use('/auth', authRouter);
 app.use(resHandler);
 app.use(errorHandler);
 
-mongoose.connect(
-  MDB_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
-  (error) => {
-    if (error) {
-      logger.error(error);
-      return;
-    }
-    logger.info('Connected to Database');
-    app.listen(PORT, () => logger.info('Server started'));
+mongoose.connect(MDB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, (error) => {
+  if (error) {
+    logger.error(error);
+    return;
   }
-);
+  logger.info('Connected to Database');
+  app.listen(PORT, () => logger.info('Server started'));
+});
