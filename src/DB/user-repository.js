@@ -10,6 +10,10 @@ class UserRepository {
     return User.findOne({ email, deleted: false });
   }
 
+  findUserById(_id) {
+    return User.findOne({ _id });
+  }
+
   async createUser(data) {
     const { hashedPassword } = await hashing(data.password);
     return await User.create({
@@ -54,6 +58,12 @@ class UserRepository {
 
   async deleteUser(user_name) {
     return User.delete({ user_name });
+  }
+
+  async resetPassword(_id, password) {
+    const { hashedPassword } = await hashing(password);
+
+    return User.updateOne({ _id }, { $set: { password: hashedPassword } }, { new: true });
   }
 }
 

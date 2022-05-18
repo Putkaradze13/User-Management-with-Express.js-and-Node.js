@@ -9,4 +9,4 @@ userRouter.get('/getAllUsers', usersController.getAllUsers);
 userRouter.get('/getOneUser', usersController.getOneUser);
 userRouter.delete('/deleteUser/:username', jwtAuth, usersController.deleteUser);
 userRouter.post('/forgotPassword', usersController.forgotPassword);
-userRouter.post('/:userId/:token', usersController.resetPassword);
+userRouter.post('/password-reset/:userId/:token', usersController.resetPassword);

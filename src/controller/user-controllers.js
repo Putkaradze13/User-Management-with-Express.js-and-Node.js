@@ -91,16 +91,15 @@ class UsersController {
   async resetPassword(req, res, next) {
     try {
       res.data = {};
-      const { userId } = req.params.userId;
-      const { token } = req.params.token;
+      const { userId } = req.params;
+      const { token } = req.params;
       const { password } = req.body;
-      console.log(userId, token, password);
 
       await usersService.resetPasswordService(userId, token, password);
 
-      res.data = { message: `Sucessfully reseted password.` };
+      res.data = { message: `Password is successfully reset!` };
       next();
-    } catch (error) {
+    } catch (err) {
       next({ message: err.message });
     }
   }

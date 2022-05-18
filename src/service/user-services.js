@@ -5,9 +5,6 @@ import { validateCreate, validateUpdate } from '../model/user-schema.js';
 import { validateForgotPass, validateResetPass } from '../model/token-schema.js';
 import { sendEmail } from '../utils/sendMail.js';
 import { Token } from '../model/token-schema.js';
-import { User } from '../model/user-schema.js';
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 
 class UsersService {
   constructor() {
@@ -85,19 +82,13 @@ class UsersService {
     }
     const user = await userRepository.findUserByEmail(email);
     if (!user) throw new Error(`User with given email doesn't exist`);
-    console.log(user._id);
 
-    let token = await this.tokenRepository.findUserById(user._id);
-    if (token) {
-      await this.tokenRepository.deleteTokenByUserId(user._id);
+    let token = await this.tokenRepository.findTokenByUserId(user._id);
+    if (!token) {
+      token = await this.tokenRepository.createToken(user._id);
     }
 
-    let resetToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = await bcrypt.hash(resetToken, 10);
-
-    await this.tokenRepository.createToken(user._id, hashedToken);
-
-    const link = `${process.env.BASE_URL}/${user._id}/${token.token}`;
+    const link = `${process.env.BASE_URL}/password-reset/${user._id}/${token.token}`;
     await sendEmail(user.email, 'Password reset request', link);
     return link;
   }
@@ -108,18 +99,16 @@ class UsersService {
       throw new Error(error.details[0].message);
     }
 
-    const user = await User.findById({ userId });
+    const user = await userRepository.findUserById(userId);
     if (!user) throw new Error('Invalid link or expired!');
+    const { _id } = user;
 
-    const tokenn = await Token.findOne({
-      userId: userId,
-      token: token
-    });
-    if (!token) throw new Error('Invalid link or expired');
+    const tokenExists = await this.tokenRepository.findUserToken(_id, token);
+    if (!tokenExists) throw new Error('Invalid link or expired');
 
-    user.password = password;
-    await User.save();
-    await Token.delete();
+    await userRepository.resetPassword(userId, password);
+
+    await this.tokenRepository.deleteTokenByUserId(user._id);
   }
 }
 
