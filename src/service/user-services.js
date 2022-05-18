@@ -4,7 +4,6 @@ import { TokenRepository } from '../DB/token-repository.js';
 import { validateCreate, validateUpdate } from '../model/user-schema.js';
 import { validateForgotPass, validateResetPass } from '../model/token-schema.js';
 import { sendEmail } from '../utils/sendMail.js';
-import { Token } from '../model/token-schema.js';
 
 class UsersService {
   constructor() {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import mongoose_delete from 'mongoose-delete';
-const Schema = mongoose.Schema;
 import Joi from 'joi';
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
