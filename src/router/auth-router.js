@@ -8,7 +8,7 @@ import { validate } from '../middleware/joi-validation.js';
 export const authRouter = new Router();
 authRouter.post(
   '/login',
-  filterBody(['user_name', 'password']),
+  filterBody(['email', 'password', 'type']),
   validate(schemas.login),
   authController.login
 );

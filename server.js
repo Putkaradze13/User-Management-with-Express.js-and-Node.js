@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { Logger } from './src/log/logger.js';
 import { userRouter } from './src/router/user-router.js';
 import { authRouter } from './src/router/auth-router.js';
+import { adminRouter } from './src/router/admin-router.js';
 import { resHandler } from './src/utils/response-handler.js';
 import { errorHandler } from './src/utils/error-handler.js';
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(express.json());
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
 app.use(resHandler);
 app.use(errorHandler);
 

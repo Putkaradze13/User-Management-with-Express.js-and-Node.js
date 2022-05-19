@@ -17,8 +17,9 @@ export const schemas = {
   }),
 
   login: Joi.object().keys({
-    user_name: Joi.string().alphanum().required().min(3).max(32),
-    password: Joi.string().required().min(3)
+    email: Joi.string().required().email().lowercase(),
+    password: Joi.string().required().min(3),
+    type: Joi.string().required()
   }),
 
   forgotPassword: Joi.object().keys({
@@ -26,6 +27,13 @@ export const schemas = {
   }),
 
   resetPassword: Joi.object().keys({
+    password: Joi.string().required().min(3)
+  }),
+
+  createAdmin: Joi.object().keys({
+    first_name: Joi.string().required().min(3).max(24),
+    last_name: Joi.string().required().min(3).max(24),
+    email: Joi.string().required().email().lowercase(),
     password: Joi.string().required().min(3)
   })
 };

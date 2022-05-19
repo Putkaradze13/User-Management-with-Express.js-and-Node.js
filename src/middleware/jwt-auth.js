@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { userRepository } from '../DB/user-repository.js';
+import { adminRepository } from '../DB/admin-repository.js';
 
 export const jwtAuth = async (req, res, next) => {
   try {
@@ -8,8 +9,14 @@ export const jwtAuth = async (req, res, next) => {
     if (token == null) return next({ message: 'Not allowed' });
 
     const user = jwt.verify(token, process.env.JWT_KEY);
-    const userExists = await userRepository.findUser(user.user_name);
-    req.userData = userExists;
+    if (user.type === 'client') {
+      const userExists = await userRepository.findUserByEmail(user.email);
+      req.userData = userExists;
+    } else if (user.type === 'admin') {
+      const adminExists = await adminRepository.findAdminByEmail(user.email);
+      req.userData = adminExists;
+    }
+
     next();
   } catch (error) {
     next(error);

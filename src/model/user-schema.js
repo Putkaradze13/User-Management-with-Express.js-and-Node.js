@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mongoose_delete from 'mongoose-delete';
+
 const Schema = mongoose.Schema;
 
 const user = new Schema(
