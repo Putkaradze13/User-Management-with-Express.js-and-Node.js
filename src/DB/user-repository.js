@@ -6,6 +6,10 @@ class UserRepository {
     return await User.findOne({ user_name });
   }
 
+  findUserByEmail(email) {
+    return User.findOne({ email });
+  }
+
   async findUserById(_id) {
     return await User.findOne({ _id });
   }
@@ -46,6 +50,12 @@ class UserRepository {
 
   async deleteUserById(_id) {
     return User.delete({ _id });
+  }
+
+  async resetPassword(_id, password) {
+    const { hashedPassword } = await hashing(password);
+
+    return User.updateOne({ _id }, { $set: { password: hashedPassword } }, { new: true });
   }
 }
 

@@ -1,4 +1,7 @@
+import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
+import { tokenRepository } from '../DB/token-repository.js';
+import { sendEmail } from '../utils/send-mail.js';
 
 class UsersService {
   async createService(data) {
@@ -49,6 +52,34 @@ class UsersService {
 
     await userRepository.deleteUserById(userId);
     return await userRepository.findUserById(userId);
+  }
+
+  async forgotPasswordService(email) {
+    const user = await userRepository.findUserByEmail(email);
+    if (!user) throw new Error(`User with given email doesn't exist`);
+
+    let token = await tokenRepository.findTokenByUserId(user._id);
+    if (token) {
+      await tokenRepository.deleteTokenByUserId(user._id);
+    }
+    token = await tokenRepository.createToken(user._id);
+
+    const link = `${process.env.BASE_URL}/user/resetPassword/${user._id}/${token.token}`;
+    await sendEmail(user.email, 'Reset password request', link);
+    return link;
+  }
+
+  async resetPasswordService(userId, token, password) {
+    const user = await userRepository.findUserById(userId);
+    if (!user) throw new Error('Invalid link or expired!');
+    const { _id } = user;
+
+    const tokenExists = await tokenRepository.findUserToken(_id, token);
+    if (!tokenExists) throw new Error('Invalid link or expired');
+
+    await userRepository.resetPassword(userId, password);
+
+    await tokenRepository.deleteTokenByUserId(user._id);
   }
 }
 

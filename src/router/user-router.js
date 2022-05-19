@@ -22,3 +22,13 @@ userRouter.put(
 userRouter.get('/', usersController.getAllUsers);
 userRouter.get('/:userId', usersController.getOneUser);
 userRouter.delete('/:userId', jwtAuth, usersController.deleteUser);
+userRouter.post(
+  '/forgotPassword',
+  validate(schemas.forgotPassword),
+  usersController.forgotPassword
+);
+userRouter.post(
+  '/resetPassword/:userId/:token',
+  validate(schemas.resetPassword),
+  usersController.resetPassword
+);

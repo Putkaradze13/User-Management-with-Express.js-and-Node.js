@@ -19,5 +19,13 @@ export const schemas = {
   login: Joi.object().keys({
     user_name: Joi.string().alphanum().required().min(3).max(32),
     password: Joi.string().required().min(3)
+  }),
+
+  forgotPassword: Joi.object().keys({
+    email: Joi.string().required().email().lowercase()
+  }),
+
+  resetPassword: Joi.object().keys({
+    password: Joi.string().required().min(3)
   })
 };
