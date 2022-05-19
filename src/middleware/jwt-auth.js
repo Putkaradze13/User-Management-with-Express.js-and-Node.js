@@ -12,9 +12,12 @@ export const jwtAuth = async (req, res, next) => {
     if (user.type === 'client') {
       const userExists = await userRepository.findUserByEmail(user.email);
       req.userData = userExists;
+      req.userData.type = 'client';
+      console.log(req.userData);
     } else if (user.type === 'admin') {
       const adminExists = await adminRepository.findAdminByEmail(user.email);
       req.userData = adminExists;
+      req.userData.type = 'admin';
     }
 
     next();

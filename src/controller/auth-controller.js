@@ -14,9 +14,8 @@ class AuthController {
 
   async whoami(req, res, next) {
     try {
-      res.data = {};
-      const user = await authService.whoamiService(req.userData);
-      res.data = user;
+      res.data = req.userData;
+      console.log(req.userData);
       next();
     } catch (err) {
       next(err);

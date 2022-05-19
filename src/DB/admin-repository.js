@@ -1,4 +1,4 @@
-import { Admin } from '../model/Admin-schema.js';
+import { Admin } from '../model/admin-schema.js';
 import { hashing } from '../secure/hash.js';
 
 class AdminRepository {
@@ -18,3 +18,4 @@ class AdminRepository {
   }
 }
 export const adminRepository = new AdminRepository();
+
