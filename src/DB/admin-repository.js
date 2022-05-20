@@ -6,6 +6,10 @@ class AdminRepository {
     return Admin.findOne({ email });
   }
 
+  async findAdminById(_id) {
+    return await Admin.findOne({ _id });
+  }
+
   async createAdmin(data) {
     const { hashedPassword } = await hashing(data.password);
 
@@ -16,6 +20,10 @@ class AdminRepository {
       password: hashedPassword
     });
   }
-}
-export const adminRepository = new AdminRepository();
 
+  async deleteAdminById(_id) {
+    return Admin.delete({ _id });
+  }
+}
+
+export const adminRepository = new AdminRepository();

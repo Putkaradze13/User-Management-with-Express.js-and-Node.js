@@ -13,3 +13,4 @@ adminRouter.post(
   validate(schemas.createAdmin),
   adminController.create
 );
+adminRouter.delete('/:userId', jwtAuth, adminController.deleteAdmin);

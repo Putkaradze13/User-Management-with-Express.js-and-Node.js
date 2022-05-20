@@ -21,7 +21,7 @@ class UserService {
   }
 
   async updateService(userId, data, userData) {
-    if (userId != userData._id) {
+    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id)) {
       throw new Error('Not allowed');
     }
 
@@ -46,9 +46,12 @@ class UserService {
   }
 
   async deleteService(userId, userData) {
-    if (userId != userData._id) throw new Error('Not allowed');
+    const user = await userRepository.findUserById(userId);
 
-    if (userData.deleted === true) throw new Error(`User is already deleted!`);
+    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id))
+      throw new Error('Not allowed');
+
+    if (user.deleted === true) throw new Error(`User is already deleted!`);
 
     await userRepository.deleteUserById(userId);
     return await userRepository.findUserById(userId);

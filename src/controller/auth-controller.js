@@ -15,7 +15,6 @@ class AuthController {
   async whoami(req, res, next) {
     try {
       res.data = req.userData;
-      console.log(req.userData);
       next();
     } catch (err) {
       next(err);
