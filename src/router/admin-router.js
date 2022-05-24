@@ -1,7 +1,7 @@
 import { adminController } from '../controller/admin-controller.js';
 import { Router } from 'express';
 import { filterBody } from '../middleware/filter-body.js';
-import { schemas } from '../model/joi-schemas.js';
+import { schemas } from '../utils/joi-schemas.js';
 import { validate } from '../middleware/joi-validation.js';
 import { jwtAuth } from '../middleware/jwt-auth.js';
 

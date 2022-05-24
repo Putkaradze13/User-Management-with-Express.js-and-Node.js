@@ -2,7 +2,7 @@ import { userController } from '../controller/user-controller.js';
 import { jwtAuth } from '../middleware/jwt-auth.js';
 import { Router } from 'express';
 import { filterBody } from '../middleware/filter-body.js';
-import { schemas } from '../model/joi-schemas.js';
+import { schemas } from '../utils/joi-schemas.js';
 import { validate } from '../middleware/joi-validation.js';
 
 export const userRouter = new Router();
