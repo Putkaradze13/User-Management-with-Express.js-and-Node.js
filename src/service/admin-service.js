@@ -1,5 +1,7 @@
 import { adminRepository } from '../DB/admin-repository.js';
 import { Admin } from '../model/admin-schema.js';
+import { tokenRepository } from '../DB/token-repository.js';
+import { sendEmail } from '../utils/send-mail.js';
 
 class AdminService {
   async createAdminService(data) {
@@ -29,6 +31,34 @@ class AdminService {
 
     await adminRepository.deleteAdminById(userId);
     return await adminRepository.findAdminById(userId);
+  }
+
+  async forgotPasswordService(email) {
+    const admin = await adminRepository.findAdminByEmail(email);
+    if (!admin) throw new Error(`Admin with given email doesn't exist`);
+
+    let token = await tokenRepository.findTokenByUserId(admin._id);
+    if (token) {
+      await tokenRepository.deleteTokenByUserId(admin._id);
+    }
+    token = await tokenRepository.createToken(admin._id);
+
+    const link = `${process.env.BASE_URL}/admin/resetPassword/${admin._id}/${token.token}`;
+    await sendEmail(admin.email, 'Reset password request', link);
+    return link;
+  }
+
+  async resetPasswordService(adminId, token, password) {
+    const admin = await adminRepository.findAdminById(adminId);
+    if (!admin) throw new Error('Invalid link or expired!');
+    const { _id } = admin;
+
+    const tokenExists = await tokenRepository.findUserToken(_id, token);
+    if (!tokenExists) throw new Error('Invalid link or expired');
+
+    await adminRepository.resetPassword(adminId, password);
+
+    await tokenRepository.deleteTokenByUserId(admin._id);
   }
 }
 

@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import nodemailer from 'nodemailer';
 
 const { HOST, SERVICE, USER, PASS } = process.env;

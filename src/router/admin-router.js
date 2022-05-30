@@ -14,3 +14,13 @@ adminRouter.post(
   adminController.create
 );
 adminRouter.delete('/:userId', jwtAuth, adminController.deleteAdmin);
+adminRouter.post(
+  '/forgotPassword',
+  validate(schemas.forgotPassword),
+  adminController.forgotPassword
+);
+adminRouter.post(
+  '/resetPassword/:adminId/:token',
+  validate(schemas.resetPassword),
+  adminController.resetPassword
+);

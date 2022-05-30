@@ -19,8 +19,7 @@ class TokenRepository {
   createToken(_id) {
     return Token.create({
       userId: _id,
-      token: crypto.randomBytes(32).toString('hex'),
-      createdAt: Date.now()
+      token: crypto.randomBytes(32).toString('hex')
     });
   }
 }

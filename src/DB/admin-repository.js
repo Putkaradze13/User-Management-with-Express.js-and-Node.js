@@ -24,6 +24,12 @@ class AdminRepository {
   async deleteAdminById(_id) {
     return Admin.delete({ _id });
   }
+
+  async resetPassword(_id, password) {
+    const { hashedPassword } = await hashing(password);
+
+    return Admin.updateOne({ _id }, { $set: { password: hashedPassword } }, { new: true });
+  }
 }
 
 export const adminRepository = new AdminRepository();

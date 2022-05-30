@@ -48,8 +48,9 @@ class UserService {
   async deleteService(userId, userData) {
     const user = await userRepository.findUserById(userId);
 
-    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id))
+    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id)) {
       throw new Error('Not allowed');
+    }
 
     if (user.deleted === true) throw new Error(`User is already deleted!`);
 

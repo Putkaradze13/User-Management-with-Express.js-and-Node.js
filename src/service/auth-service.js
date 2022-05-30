@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { userRepository } from '../DB/user-repository.js';
 import { adminRepository } from '../DB/admin-repository.js';
 import { comparePasswords } from '../secure/hash.js';
