@@ -5,10 +5,10 @@ const Schema = mongoose.Schema;
 
 const admin = new Schema(
   {
-    first_name: {},
-    last_name: {},
-    email: {},
-    password: {}
+    first_name: { type: String },
+    last_name: { type: String },
+    email: { type: String },
+    password: { type: String }
   },
   { timestamps: true }
 );

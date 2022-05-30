@@ -21,7 +21,7 @@ class UserService {
   }
 
   async updateService(userId, data, userData) {
-    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id)) {
+    if (userData.type !== 'admin' && userId !== userData._id.toStringh()) {
       throw new Error('Not allowed');
     }
 
@@ -48,7 +48,7 @@ class UserService {
   async deleteService(userId, userData) {
     const user = await userRepository.findUserById(userId);
 
-    if (userData.type !== 'admin' && userId !== JSON.stringify(userData._id)) {
+    if (userData.type !== 'admin' && userId !== userData._id.toString()) {
       throw new Error('Not allowed');
     }
 
