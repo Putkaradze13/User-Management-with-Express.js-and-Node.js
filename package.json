@@ -1,0 +1,48 @@
+{
+  "name": "task20-rest",
+  "version": "1.0.0",
+  "description": "Node.js RESTful API Project",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "lint": "eslint \"**/*.js\" --fix",
+    "format": "prettier --write \"**/*.js\""
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api"
+  ],
+  "author": "Tengo",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.9.1",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.7",
+    "mongoose-delete": "^0.5.4",
+    "nodemailer": "^6.7.5",
+    "pino": "^7.9.0",
+    "pino-pretty": "^7.5.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "husky": "^4.3.8",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format && npm run lint"
+    }
+  }
+}
